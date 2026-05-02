@@ -1,29 +1,32 @@
-<!DOCTYPE html>
+function register() {
+    let username = document.getElementById("regUsername");
+    let password = document.getElementById("regPassword");
 
-<html>
-<head>
-    <title>Register</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    if (!username || !password) {
+        alert("Form error!");
+        return;
+    }
 
-<div class="container">
-    <h2>Register</h2>
+    let u = username.value.trim();
+    let p = password.value.trim();
 
-```
-<input type="text" id="regUsername" placeholder="Username"><br><br>
-<input type="password" id="regPassword" placeholder="Password"><br><br>
+    if (u === "" || p === "") {
+        alert("Fill all fields!");
+        return;
+    }
 
-<button type="button" onclick="register()">Register</button>
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-<p id="msg"></p>
+    let exists = users.find(user => user.username === u);
 
-<p>Already have account? <a href="index.html">Login</a></p>
-```
+    if (exists) {
+        document.getElementById("msg").innerText = "User already exists!";
+        return;
+    }
 
-</div>
+    users.push({ username: u, password: p });
 
-<script src="script.js"></script>
+    localStorage.setItem("users", JSON.stringify(users));
 
-</body>
-</html>
+    document.getElementById("msg").innerText = "Registered Successfully!";
+}
